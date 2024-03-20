@@ -85,6 +85,14 @@ with st.form(key="form"):
         label="선수 이미지 URL",
         value=example_player["image_url"] if auto_complete else ""
     )
+    camera = st.text_input(
+        label="촬영",
+        value=example_player["camera"] if auto_complete else ""
+    )
+    years = st.text_input(
+        label="연도",
+        value=example_player["years"] if auto_complete else ""
+    )
     submit = st.form_submit_button(label="Submit")
     if submit:
         if not name:
@@ -95,12 +103,14 @@ with st.form(key="form"):
             st.success("선수를 추가할 수 있습니다.")
             st.session_state.players.append({
                 "name": name,
-                "types": types, 
-                "image_url": image_url if image_url else "./images/default.png"
+                "types": types,
+                "image_url": image_url if image_url else "./images/default.png",
+                "camera": camera,
+                "years": years
             })
 
 
-for i in range(0, len(st.session_state.pros), 2):
+for i in range(0, len(st.session_state.players), 2):
     row_players = st.session_state.players[i:i+2]
     cols = st.columns(2)
     for j in range(len(row_players)):
@@ -115,5 +125,5 @@ for i in range(0, len(st.session_state.pros), 2):
                 delete_button = st.button(label="삭제", key=i+j, use_container_width=True)
                 if delete_button:
                     print("delete button clicked!")
-                    del st.session_state.pros[i+j]
+                    del st.session_state.players[i+j]
                     st.rerun()
